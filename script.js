@@ -152,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
             authButtonsContainer.appendChild(logoutBtn);
 
             logoutBtn.addEventListener('click', () => {
-                // Call AppVirality logout
-                appvirality.logout();
+                // Note: appvirality.logout() is not available in current SDK version
+                // We handle logout by clearing local data and UI
 
                 user.isLoggedIn = false;
                 user.email = null;

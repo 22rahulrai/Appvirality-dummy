@@ -82,7 +82,7 @@ dummy-website/
 1. **`appvirality.init()`** - Initialize SDK with user data
 2. **`appvirality.getReferrerCode()`** - Get referral code from cookies
 3. **`appvirality.getReferrer()`** - Get referrer details
-4. **`appvirality.logout()`** - Logout user from SDK
+4. **`appvirality.logout()`** - Not available in current SDK version (handled locally)
 
 ## Testing the Integration
 
@@ -112,6 +112,7 @@ The integration includes comprehensive console logging:
 2. **No referral code**: Ensure cookies are enabled and referral code exists
 3. **No referrer info**: User might not have been referred by anyone
 4. **Widget not opening**: Check if the button has the correct class name
+5. **Logout error**: The `appvirality.logout()` function is not available in the current SDK version - logout is handled locally by clearing user data
 
 ## Next Steps
 
