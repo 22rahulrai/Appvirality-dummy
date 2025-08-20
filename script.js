@@ -69,12 +69,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="text-2xl font-mono font-bold text-green-600">${referralCode}</span>
             </div>
             <p class="text-green-700 mb-4">Share this code with friends and earn rewards!</p>
-            <button onclick="navigator.clipboard.writeText('${referralCode}')" 
+            <button id="copy-referral-btn" onclick="navigator.clipboard.writeText('${referralCode}')" 
                     class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
                 📋 Copy Code
             </button>
         `;
+
+        // Add event listener for copy button
+        const copyBtn = document.getElementById("copy-referral-btn");
+        copyBtn.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(referralCode);
+                copyBtn.innerText = "✅ Copied!";
+                copyBtn.disabled = true; // optional: disable button after copy
+                setTimeout(() => {
+                    copyBtn.innerText = "📋 Copy Code";
+                    copyBtn.disabled = false;
+                }, 5000); // reset after 5s
+            } catch (err) {
+                console.error("Failed to copy: ", err);
+            }
+        });
     }
+
+    
+
 
     // Function to get and display referrer details
     function getAndDisplayReferrerDetails(userEmail) {
