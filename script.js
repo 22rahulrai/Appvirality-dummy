@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Display user's referral code on screen
             if (data.referralcode) {
+                console.log("Referral code:", data.referralcode);
                 displayReferralCode(data.referralcode);
             }
 
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
         `;
 
-        // Add event listener for copy button
+        // Add event listener for copy button after copy button is clicked and it will change to copied
         const copyBtn = document.getElementById("copy-referral-btn");
         copyBtn.addEventListener("click", async () => {
             try {
@@ -92,12 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
-
-
     // Function to get and display referrer details
     function getAndDisplayReferrerDetails(userEmail) {
         appvirality.getReferrer(appkey, null, userEmail, null, function (err, data) {
+            console.log("Referrer user data:", data);
             if (!err && data && data.referrername) {
                 displayReferrerInfo(data);
             } else {
@@ -241,13 +240,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global functions for dashboard buttons
     window.loadCampaignData = function () {
         appvirality.getCampaignData(function (err, data) {
+        
             const campaignDiv = document.getElementById('campaign-data');
             if (!err && data) {
                 campaignDiv.innerHTML = `
-                    <p><strong>Campaign:</strong> ${data.campaign_name || 'N/A'}</p>
-                    <p><strong>Status:</strong> ${data.status || 'N/A'}</p>
-                    <p><strong>Type:</strong> ${data.campaign_type || 'N/A'}</p>
-                    <p><strong>Reward:</strong> ${data.reward_description || 'N/A'}</p>
+                    <p><strong>Campaign:</strong> ${data.campaignname || 'N/A'}</p>
+                    <p><strong>Start Date:</strong> ${data.campaignstartdate || 'N/A'}</p>
+                    <p><strong>Reward Unit:</strong> ${data.offertitle || 'N/A'}</p>
+                    <p><strong>Reward type:</strong> ${data.rewardtype || 'N/A'}</p>
+                    <p>it will be from 0 to 3. Where 0 – no rewards, 1- reward for only referrer,2- reward for only friend,3-both referrer and friend have rewards.</p>
                 `;
             } else {
                 campaignDiv.innerHTML = '<p class="text-red-600">Error loading campaign data</p>';
@@ -257,13 +258,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.loadUserBalance = function () {
         appvirality.getUserBalance(function (err, data) {
+            
             const balanceDiv = document.getElementById('user-balance');
             if (!err && data) {
                 balanceDiv.innerHTML = `
-                    <p><strong>Current Balance:</strong> ${data.balance || '0'}</p>
-                    <p><strong>Currency:</strong> ${data.currency || 'N/A'}</p>
-                    <p><strong>Total Earned:</strong> ${data.total_earned || '0'}</p>
-                    <p><strong>Pending:</strong> ${data.pending || '0'}</p>
+                    <p><strong>total:</strong> ${data.total || '0'}</p>
+                    <p><strong>Success:</strong> ${data.success || 'N/A'}</p>
+                    <p><strong>Message:</strong> ${data.message || '0'}</p>
+                    
                 `;
             } else {
                 balanceDiv.innerHTML = '<p class="text-red-600">Error loading balance</p>';
@@ -292,13 +294,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // This callback is used to get the campaign’s terms and conditions as set on the dashboard.
     window.loadTerms = function () {
         appvirality.getTerms(function (err, data) {
             const termsDiv = document.getElementById('terms-data');
             if (!err && data) {
                 termsDiv.innerHTML = `
                     <p><strong>Terms:</strong></p>
-                    <p>${data.terms || 'No terms available'}</p>
+                    <p>Success: ${data.success || 'No terms available'}</p>
                 `;
             } else {
                 termsDiv.innerHTML = '<p class="text-red-600">Error loading terms</p>';
@@ -316,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         appvirality.validateCode(code, function (err, data) {
-            if (!err && data && data.valid) {
+            if (!err && data && data.success) {
                 resultDiv.innerHTML = '<p class="text-green-600">✅ Valid code!</p>';
             } else {
                 resultDiv.innerHTML = '<p class="text-red-600">❌ Invalid code</p>';
@@ -324,30 +327,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // This callback is used to record social actions such as email sharing.
     window.recordSocialAction = function () {
         const email = document.getElementById('share-email').value;
         const message = document.getElementById('share-message').value;
-
+    
         if (!email || !message) {
             alert('Please fill in both email and message');
             return;
         }
-
+    
         const mailBody = message;
         const mailTo = email;
         const mailSubject = 'Check out this awesome referral program!';
-        const socialActionId = 'email_share';
-
+        const socialActionId = 'email_share'; // must match the ID in AppVirality campaign
+    
         appvirality.recordSocialAction(mailBody, socialActionId, mailTo, mailSubject, function (err, data) {
-            if (!err && data) {
-                alert('Social action recorded successfully!');
+            if (err) {
+                console.error("API Error:", err);
+                alert("Error recording social action: " + err);
+                return;
+            }
+    
+            if (data) {
+                if (data.mailsent) {
+                    alert('✅ Email sent successfully!');
+                } else {
+                    alert('⚠️ Email not sent (check SMTP settings).');
+                }
+    
+                // reset inputs
                 document.getElementById('share-email').value = '';
                 document.getElementById('share-message').value = '';
             } else {
-                alert('Error recording social action');
+                alert("⚠️ No response from server.");
             }
         });
     };
+    
 
     window.showCustomWidget = function () {
         appvirality.widget({
