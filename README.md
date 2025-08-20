@@ -8,8 +8,17 @@ This project demonstrates the integration of AppVirality SaaS Web SDK for implem
 2. **AppVirality SDK Integration** - Complete integration following the official guide
 3. **Referral Code Display** - Shows user's referral code after signup/login
 4. **Referrer Information Display** - Shows who referred the user (if applicable)
-5. **Auto-fill Referral Code** - Automatically fills referral code from cookies during signup
+5. **Auto-fill Referral Code** - Automatically fills referral code from cookies and URL parameters during signup
 6. **Referral Widget** - Launch referral popup using the "Launch Referrals" button
+7. **Comprehensive Referral Dashboard** - Full dashboard with all AppVirality features
+8. **Campaign Data Display** - Shows active campaign information
+9. **User Balance Tracking** - Displays current rewards and earnings
+10. **Friends List Management** - Shows referred friends and their status
+11. **Terms & Conditions** - Displays campaign terms
+12. **Code Validation** - Real-time validation of referral codes
+13. **Social Action Recording** - Track social sharing activities
+14. **Custom Widget** - Configurable referral widget
+15. **Apply Code Functionality** - Automatically applies referral codes during signup
 
 ## Integration Steps Followed
 
@@ -39,12 +48,21 @@ This project demonstrates the integration of AppVirality SaaS Web SDK for implem
 
 1. **Open the website** - Navigate to the homepage
 2. **Sign up/Login** - Click "Login / Signup" button
-3. **Enter referral code** - If you have a referral code, it will be auto-filled from cookies
+3. **Enter referral code** - If you have a referral code, it will be auto-filled from cookies or URL parameters
 4. **Complete signup** - After successful signup, you'll see:
    - Your personal referral code
    - Information about who referred you (if applicable)
-5. **Share your code** - Use the "Copy Code" button to share your referral code
-6. **Launch referrals** - Click "Launch Referrals" to open the AppVirality referral widget
+   - Comprehensive referral dashboard with all features
+5. **Use the dashboard** - Explore all the referral features:
+   - View campaign information
+   - Check your balance and earnings
+   - See your referred friends
+   - Read terms and conditions
+   - Validate referral codes
+   - Record social actions
+   - Use custom widgets
+6. **Share your code** - Use the "Copy Code" button to share your referral code
+7. **Launch referrals** - Click "Launch Referrals" to open the AppVirality referral widget
 
 ## File Structure
 
@@ -77,12 +95,34 @@ dummy-website/
 - Displays referrer name, profile image, and reward details
 - Shows in a styled card format
 
+### `createReferralDashboard()`
+- Creates a comprehensive dashboard with all AppVirality features
+- Includes campaign data, user balance, friends list, terms, validation, and social actions
+- Provides interactive buttons for all SDK methods
+
+### Global Dashboard Functions
+- `loadCampaignData()` - Fetches and displays campaign information
+- `loadUserBalance()` - Shows user's current rewards balance
+- `loadFriendsList()` - Displays list of referred friends
+- `loadTerms()` - Shows campaign terms and conditions
+- `validateReferralCode()` - Validates referral codes in real-time
+- `recordSocialAction()` - Records social sharing activities
+- `showCustomWidget()` - Displays configurable referral widget
+
 ## AppVirality SDK Methods Used
 
 1. **`appvirality.init()`** - Initialize SDK with user data
 2. **`appvirality.getReferrerCode()`** - Get referral code from cookies
 3. **`appvirality.getReferrer()`** - Get referrer details
-4. **`appvirality.logout()`** - Not available in current SDK version (handled locally)
+4. **`appvirality.getCampaignData()`** - Get active campaign information
+5. **`appvirality.getUserBalance()`** - Get user's current rewards balance
+6. **`appvirality.getFriendsList()`** - Get list of referred friends
+7. **`appvirality.getTerms()`** - Get campaign terms and conditions
+8. **`appvirality.validateCode()`** - Validate referral codes
+9. **`appvirality.applyCode()`** - Apply referral code to user account
+10. **`appvirality.recordSocialAction()`** - Record social sharing activities
+11. **`appvirality.widget()`** - Display custom referral widget
+12. **`appvirality.logout()`** - Not available in current SDK version (handled locally)
 
 ## Testing the Integration
 
