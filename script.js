@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global functions for dashboard buttons
     window.loadCampaignData = function () {
         appvirality.getCampaignData(function (err, data) {
-        
+
             const campaignDiv = document.getElementById('campaign-data');
             if (!err && data) {
                 campaignDiv.innerHTML = `
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.loadUserBalance = function () {
         appvirality.getUserBalance(function (err, data) {
-            
+
             const balanceDiv = document.getElementById('user-balance');
             if (!err && data) {
                 balanceDiv.innerHTML = `
@@ -331,31 +331,31 @@ document.addEventListener('DOMContentLoaded', () => {
     window.recordSocialAction = function () {
         const email = document.getElementById('share-email').value;
         const message = document.getElementById('share-message').value;
-    
+
         if (!email || !message) {
             alert('Please fill in both email and message');
             return;
         }
-    
+
         const mailBody = message;
         const mailTo = email;
         const mailSubject = 'Check out this awesome referral program!';
         const socialActionId = 'email_share'; // must match the ID in AppVirality campaign
-    
+
         appvirality.recordSocialAction(mailBody, socialActionId, mailTo, mailSubject, function (err, data) {
             if (err) {
                 console.error("API Error:", err);
                 alert("Error recording social action: " + err);
                 return;
             }
-    
+
             if (data) {
                 if (data.mailsent) {
                     alert('✅ Email sent successfully!');
                 } else {
                     alert('⚠️ Email not sent (check SMTP settings).');
                 }
-    
+
                 // reset inputs
                 document.getElementById('share-email').value = '';
                 document.getElementById('share-message').value = '';
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-    
+
 
     window.showCustomWidget = function () {
         appvirality.widget({
@@ -398,7 +398,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Also check URL parameters for referral code
     function getReferralCodeFromURL() {
         const urlParams = new URLSearchParams(window.location.search);
-        const refCode = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('code');
+        let refCode = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('code');
+
+        // If not found in query params, try to extract from pathname
+        if (!refCode) {
+            // Example: http://r.appvirality.com/demo10t-2xk/5
+            // window.location.pathname might be "/demo10t-2xk/5"
+            const path = window.location.pathname;
+            // Remove leading slash if present
+            const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+            // Get the first segment before the slash
+            const firstSegment = cleanPath.split('/')[0];
+            // Get the part before the dash
+            refCode = firstSegment.split('-')[0];
+        }
+
         if (refCode) {
             const refcodeInput = document.getElementById('refcode-input');
             if (refcodeInput) {
@@ -407,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
 
     // Call this function when page loads
     getReferralCodeFromURL();
