@@ -400,17 +400,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         let refCode = urlParams.get('ref') || urlParams.get('referral') || urlParams.get('code');
 
-        // If not found in query params, try to extract from pathname
+        // If not found in query params, try to extract from avsaasclk param (e.g. pi-demo10t)
         if (!refCode) {
-            // Example: http://r.appvirality.com/demo10t-2xk/5
-            // window.location.pathname might be "/demo10t-2xk/5"
-            const path = window.location.pathname;
-            // Remove leading slash if present
-            const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-            // Get the first segment before the slash
-            const firstSegment = cleanPath.split('/')[0];
-            // Get the part before the dash
-            refCode = firstSegment.split('-')[0];
+            const avsaasclk = urlParams.get('avsaasclk');
+            if (avsaasclk && avsaasclk.startsWith('pi-')) {
+                // Extract code after 'pi-'
+                refCode = avsaasclk.substring(3);
+            }
         }
 
         if (refCode) {
