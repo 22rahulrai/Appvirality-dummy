@@ -128,7 +128,7 @@ dummy-website/
 
 1. **Fresh User Signup**: Sign up without a referral code to get your own referral code
 2. **Referral Code Usage**: Use a referral code during signup to see referrer information
-3. **Cookie Testing**: The referral code should auto-fill from cookies if available
+3. **Cookie Testing**: The referral code should auto-fill from Url code is not stored in cookie
 4. **Widget Testing**: Click "Launch Referrals" to test the referral widget
 
 ## Browser Console Logs
