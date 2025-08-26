@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Simulate user state with localStorage
     const user = JSON.parse(localStorage.getItem('currentUser')) || { isLoggedIn: false, email: null, code: null };
+    // app-key  u can get it from appvirality dashboard
     const appkey = 'c0171b97c195403b8ad2b33900b84f85';
 
     // Function to initialize AppVirality SDK
@@ -340,9 +341,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const mailBody = message;
         const mailTo = email;
         const mailSubject = 'Check out this awesome referral program!';
-        const socialActionId = 'email_share'; // must match the ID in AppVirality campaign
+        const socialActionId = '5'; // find it in appvirality.entities.enum.cs
 
         appvirality.recordSocialAction(mailBody, socialActionId, mailTo, mailSubject, function (err, data) {
+            console.log("social action datasubject "+data.mailSubject)
+            console.log("social action data body"+data.mailBody)
+            console.log("social action datasubject "+data.mailsent)
+            
             if (err) {
                 console.error("API Error:", err);
                 alert("Error recording social action: " + err);
