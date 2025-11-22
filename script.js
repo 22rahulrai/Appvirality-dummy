@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Simulate user state with localStorage
     const user = JSON.parse(localStorage.getItem('currentUser')) || { isLoggedIn: false, email: null, code: null };
     // app-key  u can get it from appvirality dashboard
-    const appkey = 'c0171b97c195403b8ad2b33900b84f85';
+    // const appkey = 'c0171b97c195403b8ad2b33900b84f85';
+    const appkey ='dec36a2102df4c79b7c9b34100bc3bc1';
 
     // Function to initialize AppVirality SDK
     function initializeAppVirality(userEmail, referralCode = null) {
